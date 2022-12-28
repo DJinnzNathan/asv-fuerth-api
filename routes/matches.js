@@ -1,10 +1,11 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const env = require('dotenv').config();
 
 var express = require('express');
 var router = express.Router();
 
-const targetURL = 'https://www.bfv.de/mannschaften/asv-fuerth/016PJQMDDO000000VV0AG811VUDIC8D7';
+const targetURL = process.env.BFV_TEAM_URL;
 
 const matches = ($) => {
     const content = [];
@@ -15,13 +16,11 @@ const matches = ($) => {
         const match = {};
 
         match.matchStatus = $(el).find('.bfv-result-tile__title').text();
-        match.date = '';
-        match.dateTime = createDate($(el).find('.bfv-matchday-date-time > span:nth-child(2)').text());
+        match.matchTime = createDate($(el).find('.bfv-matchday-date-time > span:nth-child(2)').text());
         match.homeTeam = $(el).find('.bfv-matchdata-result__team-name--team0').text().trim();
         match.awayTeam = $(el).find('.bfv-matchdata-result__team-name--team1').text().trim();
         match.link = $(el).find('a').attr('href');
 
-        console.log(match);
         content.push(match);
     });
     return content;
@@ -37,8 +36,6 @@ function createDate(string) {
     let year = date[2];
     let hours = time[0];
     let minutes = time[1];
-
-    console.log(parseInt(year), parseInt(month), parseInt(day), parseInt(hours), parseInt(minutes), 0, 0);
 
     return new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hours), parseInt(minutes), 0, 0);
 }
