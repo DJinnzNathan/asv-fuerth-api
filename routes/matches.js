@@ -67,8 +67,4 @@ router.get('/next', (req, res) => {
     });
 });
 
-router.get('/hello', (req, res) => {
-    res.json({ "text": "Hello, world in matches!" });
-});
-
 module.exports = router;
