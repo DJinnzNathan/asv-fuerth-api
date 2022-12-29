@@ -37,7 +37,7 @@ function createDate(string) {
     let hours = time[0];
     let minutes = time[1];
 
-    return new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hours), parseInt(minutes), 0, 0);
+    return new Date(parseInt(year), parseInt(month)-1, parseInt(day), parseInt(hours), parseInt(minutes), 0, 0);
 }
 
 router.get('/', (req, res) => {
