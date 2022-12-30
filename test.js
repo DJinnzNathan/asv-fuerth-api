@@ -2,54 +2,57 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const app = express();
-const fs = require('fs/promises');
+const fs = require('fs');
 
 const PORT = process.env.port || 3000;
 
 const targetURL = 'https://www.bfv.de/partial/mannschaftsprofil/spielplan/016PH3NA80000000VV0AG80NVUT1FLRU/letzte?wettbewerbsart=1&spieltyp=ALLE&from=5&size=5';
 
-const test = ($) => {
+
+function readFromJSONFile(filename) {
+    return JSON.parse(fs.readFileSync(filename));
+}
+
+function writeToJSONFile(filename, data) {
+    fs.writeFileSync(filename, JSON.stringify(data, null, 2));
+}
+
+function collectNumber(key, character, values) {
+    console.log('character: ', character);
+    let data = readFromJSONFile('numbers.json');
+    console.log('if', data.some(item => item.hasOwnProperty(key)));
+    if (data.some(item => item.hasOwnProperty(key))) {
+        let pos = data.findIndex(item => item.hasOwnProperty(key));
+        console.log('hier1', data[pos][key]);
+        console.log('if 2', !data[pos][key].some(item => item.hasOwnProperty(character)));
+        if (!data[pos][key].some(item => item.hasOwnProperty(character))) {
+            console.log('hier11', data[pos][key]);
+            data[pos][key].push(values[0]);
+            writeToJSONFile('numbers.json', data);
+        }
+    } else {
+        console.log('hier2');
+        data.push({ [key]: values });
+        writeToJSONFile('numbers.json', data);
+    }
+}
+
+function test($, number, homeTeam) {
     const content = [];
-    // .bfv-matchdata-result__goals--team0
-    const number = 6;
-    let temp = $('.bfv-matchdata-result__goals--team1')[1];
+    let teamClass = (homeTeam)? '.bfv-matchdata-result__goals--team0' : '.bfv-matchdata-result__goals--team1';
+    const goalData = $(teamClass);
+    let temp = goalData[0];
+    console.log('goalData: ', goalData[0]);
     const key = temp.attribs['data-class-name'].replace('results-c-', '');
     const character = temp.children[0].data.trim();
+    console.log(key + ' : ' + character + '(' + character.charCodeAt(0) + ')' + '->' + number);
 
-    let text = key + ' : ' + character + '(' + character.charCodeAt(0) + ')' + '->' + number;
-    // ' : [character, value] }
-    let values = [{ [character]:number }];
+    let values = [{ [character]: number }];
     let output = { [key]: values };
-    // output.values.push({ [character]:number });
-    // console.log(text);
     content.push(output);
+    collectNumber(key, character, values);
+
     console.log(content);
-
-    // fetch('numbers.json').then(res => res.json()).then(data => {
-    //     data.push(output);
-
-    //     const json = JSON.stringify(data);
-
-    //     fs.writeFile('numbers.json', json, 'utf-8', (err) => {
-    //         if(err) throw err;
-    //         console.log('The file has been saved!');
-    //     });
-    // });
-
-
-    // temp.each((index, el) => {
-    //     const match = {};
-
-    //     match.matchStatus = $(el).find('.bfv-result-tile__title').text();
-    //     match.date = '';
-    //     match.homeTeam = $(el).find('.bfv-matchdata-result__team-name--team0').text().trim();
-    //     match.awayTeam = $(el).find('.bfv-matchdata-result__team-name--team1').text().trim();
-    //     match.link = $(el).find('a').attr('href');
-
-    //     console.log(match);
-    //     content.push(match);
-    // });
-    // addToReport('./entwicklung/auswertung.json', content);
     return content;
 };
 
@@ -58,8 +61,17 @@ app.get('/test', (req, res) => {
     axios.get(targetURL).then((response) => {
         const body = response.data;
         $ = cheerio.load(body); // Load HTML data and initialize cheerio 
-        res.json(test($));
+        res.json(test($, 6, false));
     });
+});
+
+app.get('/m', (req, res) => {
+    axios.get(targetURL).then((response) => {
+        const body = response.data;
+        $ = cheerio.load(body); // Load HTML data and initialize cheerio
+        test($, 2, false);
+    });
+    res.json({ "File was built!": "true" });
 });
 
 app.listen(PORT, () => {
