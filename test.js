@@ -18,31 +18,31 @@ function writeToJSONFile(filename, data) {
 }
 
 function collectNumber(key, character, values) {
+    console.log('key: ', key);
     console.log('character: ', character);
     let data = readFromJSONFile('numbers.json');
-    console.log('if', data.some(item => item.hasOwnProperty(key)));
+    console.log('if 1', data.some(item => item.hasOwnProperty(key)));
     if (data.some(item => item.hasOwnProperty(key))) {
         let pos = data.findIndex(item => item.hasOwnProperty(key));
-        console.log('hier1', data[pos][key]);
-        console.log('if 2', !data[pos][key].some(item => item.hasOwnProperty(character)));
+        console.log('Characters', data[pos][key]);
+        console.log('if 2', 'char exist:', !data[pos][key].some(item => item.hasOwnProperty(character)));
         if (!data[pos][key].some(item => item.hasOwnProperty(character))) {
-            console.log('hier11', data[pos][key]);
+            console.log('Teilweises Einfügen', data[pos][key]);
             data[pos][key].push(values[0]);
             writeToJSONFile('numbers.json', data);
         }
     } else {
-        console.log('hier2');
+        console.log('key existiert nicht -> Kombi wird eingefügt');
         data.push({ [key]: values });
         writeToJSONFile('numbers.json', data);
     }
 }
 
-function test($, number, homeTeam) {
+function test($, row, number, homeTeam) {
     const content = [];
-    let teamClass = (homeTeam)? '.bfv-matchdata-result__goals--team0' : '.bfv-matchdata-result__goals--team1';
+    let teamClass = (homeTeam) ? '.bfv-matchdata-result__goals--team0' : '.bfv-matchdata-result__goals--team1';
     const goalData = $(teamClass);
-    let temp = goalData[0];
-    console.log('goalData: ', goalData[0]);
+    let temp = goalData[row];
     const key = temp.attribs['data-class-name'].replace('results-c-', '');
     const character = temp.children[0].data.trim();
     console.log(key + ' : ' + character + '(' + character.charCodeAt(0) + ')' + '->' + number);
@@ -61,17 +61,20 @@ app.get('/test', (req, res) => {
     axios.get(targetURL).then((response) => {
         const body = response.data;
         $ = cheerio.load(body); // Load HTML data and initialize cheerio 
-        res.json(test($, 6, false));
+        res.json(test($, 1, 6, false));
     });
 });
 
 app.get('/m', (req, res) => {
+    const row = parseInt(req.query.row);
+    const goals = parseInt(req.query.goals);
+    const home = req.query.home;
     axios.get(targetURL).then((response) => {
         const body = response.data;
         $ = cheerio.load(body); // Load HTML data and initialize cheerio
-        test($, 2, false);
+        test($, row, goals, home);
     });
-    res.json({ "File was built!": "true" });
+    res.send({ "row": row, "goals": goals, "home": home });
 });
 
 app.listen(PORT, () => {
