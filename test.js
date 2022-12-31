@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const app = express();
 const fs = require('fs');
 
-const PORT = process.env.port || 3000;
+const PORT = process.env.port || 3001;
 
 const targetURL = 'https://www.bfv.de/partial/mannschaftsprofil/spielplan/016PH3NA80000000VV0AG80NVUT1FLRU/letzte?wettbewerbsart=1&spieltyp=ALLE&from=5&size=5';
 
