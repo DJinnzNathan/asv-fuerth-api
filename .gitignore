@@ -61,5 +61,4 @@ typings/
 .next
 
 # other paths
-/database
-/database/*
+database/
