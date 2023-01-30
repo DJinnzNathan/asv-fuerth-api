@@ -16,16 +16,17 @@ const table = ($) => {
     temp.find('.bfv-table-entry--data').each((index, el) => {
         const rank = {};
 
-        rank.position = $(el).find('td[class*="position"]').text().replace('.', '').trim();
+        rank.position = parseInt($(el).find('td[class*="position"]').text().replace('.', '').trim());
         rank.team = $(el).find('a').text().trim();
-        rank.played = $(el).find('td[class*="matches"]').text().trim();
-        rank.won = $(el).find('td[class*="wins"]').text().trim();
-        rank.draws = $(el).find('td[class*="draws"]').text().trim();
-        rank.lost = $(el).find('td[class*="loses"]').text().trim();
-        rank.goalsFor = $(el).find('td[class*="goalratio"]').text().trim().split(':')[0];
-        rank.goalsAgainst = $(el).find('td[class*="goalratio"]').text().trim().split(':')[1];
-        rank.goalDifference = $(el).find('td[class*="goaldifference"]').text().trim();
-        rank.points = $(el).find('td[class*="score"]').text().trim();
+        rank.played = parseInt($(el).find('td[class*="matches"]').text().trim());
+        rank.won = parseInt($(el).find('td[class*="wins"]').text().trim());
+        rank.draws = parseInt($(el).find('td[class*="draws"]').text().trim());
+        rank.lost = parseInt($(el).find('td[class*="loses"]').text().trim());
+        rank.goalsFor = parseInt($(el).find('td[class*="goalratio"]').text().trim().split(':')[0]);
+        rank.goalsAgainst = parseInt($(el).find('td[class*="goalratio"]').text().trim().split(':')[1]);
+        rank.goalDifference = parseInt($(el).find('td[class*="goaldifference"]').text().trim());
+        rank.points = parseInt($(el).find('td[class*="score"]').text().trim());
+        //TODO: Fix trend property
         rank.trend = () => {
             let sign = ''
             if ($(el).find('td[class*="up"]').text()) {
@@ -62,10 +63,6 @@ router.get('/now', (req, res) => {
         });
         res.json(result);
     });
-});
-
-router.get('/hello', (req, res) => {
-    res.json({ "text": "Hello, world in table!" });
 });
 
 module.exports = router;
