@@ -2,8 +2,8 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const env = require('dotenv').config();
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+let router = express.Router();
 
 const targetURL = process.env.BFV_TEAM_URL;
 
