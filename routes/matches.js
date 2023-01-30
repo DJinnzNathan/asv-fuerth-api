@@ -4,8 +4,8 @@ const env = require('dotenv').config();
 const path = require('path');
 const numbersData = require(path.join(__dirname, '..', 'numbers.json'));
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+let router = express.Router();
 
 const targetURL = process.env.BFV_TEAM_URL;
 
