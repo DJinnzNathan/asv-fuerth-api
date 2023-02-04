@@ -3,11 +3,10 @@ const cheerio = require('cheerio');
 const env = require('dotenv').config();
 
 const express = require('express');
-const { download } = require('express/lib/response');
 
 const router = express.Router();
 
-const targetURL = process.env.BFV_TEAM_URL;
+const targetURL = process.env.BFV_FIRSTTEAM_URL;
 
 const table = ($) => {
   const content = [];
