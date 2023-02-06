@@ -1,0 +1,61 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: dist
+
+jobs:
+# Please do not rename this job
+  build-project:
+    name: build asv-fuerth-api
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v16.x
+
+      - name: Build Node assets
+        env:
+          BFV_CLUB_NAME: asv-fuerth
+          BFV_FIRSTTEAM_URL: https://www.bfv.de/mannschaften/asv-fuerth/016PJQMDDO000000VV0AG811VUDIC8D7
+          BFV_SECONDTEAM_URL: https://www.bfv.de/mannschaften/asv-fuerth-ii/016PH3NA80000000VV0AG80NVUT1FLRU
+          CI: true
+          CLUB_NAME: ASV Fürth
+          KICKER_FIRST_TEAM_SHORTNAME: asv-fuerth
+          KICKER_SECOND_TEAM_SHORTNAME: asv-fuerth-ii
+          OPENWEATHER_API: d2fe54a679c5bff6646febe2654c5695
+          OPENWEATHER_LAT: 49.4759
+          OPENWEATHER_LON: 10.9886
+          SITE_URL: ${{ inputs.site-url }}
+        run: npm run start
+
+# Please do not touch the following action
+      - name: Store deployment content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-eu.ionos.space
+          project-id: c9717aad-4ce0-4e4b-8a69-11aec1c3e5e0
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/asv-fuerth-api/config.yaml
+          action: upload
