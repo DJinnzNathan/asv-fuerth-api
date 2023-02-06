@@ -45,7 +45,7 @@ jobs:
           OPENWEATHER_LAT: 49.4759
           OPENWEATHER_LON: 10.9886
           SITE_URL: ${{ inputs.site-url }}
-        run: npm run start
+        run: npm install
 
 # Please do not touch the following action
       - name: Store deployment content
