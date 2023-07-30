@@ -1,0 +1,34 @@
+[
+  {
+    "id": 0,
+    "category_id": 0,
+    "sport_id": 0,
+    "name": "ASV Fürth",
+    "bfv_id": "asv-fuerth/016PJQMDDO000000VV0AG811VUDIC8D7",
+    "kicker_id": "5d6461d1f30339efad2009f8"
+  },
+  {
+    "id": 1,
+    "category_id": 0,
+    "sport_id": 0,
+    "name": "ASV Fürth II",
+    "bfv_id": "asv-fuerth-ii/016PH3NA80000000VV0AG80NVUT1FLRU",
+    "kicker_id": "5d6461d1f30339efad2009f9"
+  },
+  {
+    "id": 2,
+    "category_id": 0,
+    "sport_id": 0,
+    "name": "ASV Fürth III",
+    "bfv_id": "asv-fuerth/016PJQMDDO000000VV0AG811VUDIC8D7",
+    "kicker_id": "64bf36b9ff97bbd8e26907e2"
+  },
+  {
+    "id": 3,
+    "category_id": 1,
+    "sport_id": 0,
+    "name": "ASV Fürth AH",
+    "bfv_id": "asv-fuerth-iii-ah/021NGQTRL4000000VS548985VT98051J",
+    "kicker_id": "5d6461d1f30339efad200a01"
+  }
+]

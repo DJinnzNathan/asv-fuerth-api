@@ -1,0 +1,12 @@
+[
+  { "id": 0, "name": "Herren", "alt_name": "Mannschaft" },
+  { "id": 1, "name": "Senioren", "alt_name": "Alte Herren" },
+  { "id": 2, "name": "A-Junioren", "alt_name": "A-Jugend" },
+  { "id": 3, "name": "B-Junioren", "alt_name": "B-Jugend" },
+  { "id": 4, "name": "C-Junioren", "alt_name": "C-Jugend" },
+  { "id": 5, "name": "D-Junioren", "alt_name": "D-Jugend" },
+  { "id": 6, "name": "E-Junioren", "alt_name": "E-Jugend" },
+  { "id": 7, "name": "F-Junioren", "alt_name": "F-Jugend" },
+  { "id": 8, "name": "G-Junioren", "alt_name": "G-Jugend" },
+  { "id": 9, "name": "Freizeit Herren", "alt_name": "" }
+]
