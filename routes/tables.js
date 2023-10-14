@@ -60,7 +60,6 @@ const tableBFV = ($) => {
 router.get("/", async (req, res) => {
   let team = req.query.team_id;
   const response = await kicker.getTable(team);
-  console.log(response);
   const data = await response.json();
   res.json(data);
 });
